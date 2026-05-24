@@ -20,49 +20,32 @@ export default function App() {
   useEffect(() => {
     let script: HTMLScriptElement | null = null;
 
-    const loadRuffle = async () => {
-      try {
-        script = document.createElement("script");
-        script.src = new URL(
-          "@ruffle-rs/ruffle/ruffle.js",
-          import.meta.url
-        ).href;
-        script.onload = () => {
-          setTimeout(() => {
-            initPlayer();
-          }, 200);
-        };
-        script.onerror = () => {
-          setStatus("error");
-        };
-        document.head.appendChild(script);
-      } catch {
-        setStatus("error");
-      }
+    const loadRuffle = () => {
+      script = document.createElement("script");
+      // Load Ruffle from static path (works in Capacitor Android WebView)
+      script.src = "./ruffle/ruffle.js";
+      script.onload = () => setTimeout(initPlayer, 300);
+      script.onerror = () => setStatus("error");
+      document.head.appendChild(script);
     };
 
     const initPlayer = () => {
-      if (!window.RufflePlayer) {
+      if (!window.RufflePlayer || !containerRef.current) {
         setStatus("error");
         return;
       }
-      if (!containerRef.current) return;
-
       containerRef.current.innerHTML = "";
       const ruffle = window.RufflePlayer.newest();
       const player = ruffle.createPlayer();
       player.style.width = "100%";
       player.style.height = "100%";
       containerRef.current.appendChild(player);
-      player.load({ url: `${""}game.swf`, allowScriptAccess: true });
+      player.load({ url: "./game.swf", allowScriptAccess: true });
       setStatus("ready");
     };
 
     loadRuffle();
-
-    return () => {
-      if (script) document.head.removeChild(script);
-    };
+    return () => { if (script) document.head.removeChild(script); };
   }, []);
 
   const toggleFullscreen = () => {
