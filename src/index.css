@@ -1,0 +1,202 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body, #root {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  background: #0f0f1a;
+  color: #e2e2f0;
+}
+
+.app-root {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+}
+
+/* Header */
+.app-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  height: 48px;
+  background: #16162a;
+  border-bottom: 1px solid #2a2a4a;
+  flex-shrink: 0;
+  z-index: 10;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.logo-icon {
+  color: #7c6af7;
+  font-size: 18px;
+  line-height: 1;
+}
+
+.logo-text {
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: #c8c8f0;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.status-badge {
+  font-size: 12px;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-weight: 500;
+}
+
+.status-badge[data-status="loading"] {
+  background: #2a2a50;
+  color: #9090c0;
+}
+
+.status-badge[data-status="ready"] {
+  background: #1a3a2a;
+  color: #60d080;
+}
+
+.status-badge[data-status="error"] {
+  background: #3a1a1a;
+  color: #e06060;
+}
+
+.fullscreen-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  background: #22224a;
+  border: 1px solid #3a3a6a;
+  border-radius: 8px;
+  color: #a0a0d0;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+
+.fullscreen-btn:hover {
+  background: #2e2e60;
+  color: #e0e0ff;
+}
+
+/* Game area */
+.game-area {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  background: #000;
+}
+
+.ruffle-container {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  transition: opacity 0.3s ease;
+}
+
+/* Overlay (loading / error) */
+.overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  background: #0f0f1a;
+  z-index: 5;
+}
+
+.overlay-text {
+  font-size: 15px;
+  color: #8080b0;
+  text-align: center;
+}
+
+.spinner {
+  width: 42px;
+  height: 42px;
+  border: 3px solid #2a2a4a;
+  border-top-color: #7c6af7;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.error-icon {
+  font-size: 48px;
+  color: #e06060;
+}
+
+.retry-btn {
+  padding: 8px 24px;
+  background: #7c6af7;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.retry-btn:hover {
+  background: #6a58e0;
+}
+
+/* Footer */
+.app-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  height: 32px;
+  background: #16162a;
+  border-top: 1px solid #2a2a4a;
+  flex-shrink: 0;
+  font-size: 11px;
+  color: #5a5a80;
+}
+
+.offline-badge {
+  color: #60d080;
+  font-weight: 600;
+}
+
+/* Fullscreen mode: hide chrome */
+:fullscreen .app-header,
+:fullscreen .app-footer {
+  display: none;
+}
+
+:fullscreen .ruffle-container {
+  position: fixed;
+  inset: 0;
+}
