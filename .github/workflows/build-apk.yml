@@ -15,16 +15,27 @@ jobs:
         with:
           node-version: "20"
 
-      - name: Install dependencies
+      - name: Install npm packages (for Ruffle)
         run: npm install
 
-      - name: Build web app (Vite)
-        run: npm run build
-
-      - name: Copy web assets into Android project
+      - name: Prepare Android assets (no build step needed)
         run: |
-          mkdir -p android/app/src/main/assets/public
-          cp -r dist/. android/app/src/main/assets/public/
+          mkdir -p android/app/src/main/assets/public/ruffle
+
+          # 1. Copy the plain HTML player
+          cp web/index.html android/app/src/main/assets/public/index.html
+
+          # 2. Copy Ruffle JS/WASM files
+          cp node_modules/@ruffle-rs/ruffle/* android/app/src/main/assets/public/ruffle/ 2>/dev/null || true
+
+          # 3. Copy the game SWF
+          cp game.swf android/app/src/main/assets/public/game.swf
+
+          # Debug: show what we have
+          echo "=== Assets ==="
+          ls -lh android/app/src/main/assets/public/
+          echo "=== Ruffle ==="
+          ls -lh android/app/src/main/assets/public/ruffle/ | head -20
 
       - uses: actions/setup-java@v4
         with:
